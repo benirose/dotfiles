@@ -75,8 +75,8 @@
 	insteadOf = "gist:"
 
 [user]
-	name = Matt McManus
-	email = mattmcmanus@gmail.com
+	name = Ben Rosenbach
+	email = ben@benrosenbach.com
 	
 [push]
 	default = matching
