@@ -1,4 +1,4 @@
-# mattmcmanus dotfiles
+# benirose dotfiles
 
 Dotfiles are the best. This repo includes tons of tweaks and settings. 
 
@@ -12,7 +12,7 @@ Dotfiles are the best. This repo includes tons of tweaks and settings.
 Run this:
 
 ```sh
-git clone https://github.com/mattmcmanus/dotfiles.git ~/.dotfiles
+git clone https://github.com/benirose/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
 script/bootstrap
 ```
