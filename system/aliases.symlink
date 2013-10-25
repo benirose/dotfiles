@@ -17,6 +17,8 @@ alias oo="open ."
 # List all files colorized in long format
 alias l="ls -Gl"
 
+alias cplite="rsync -av --exclude='.*' $1 $2"
+
 # List all files colorized in long format, including dot files
 alias la="ls -Gla"
 alias ll="ls -Gla"
