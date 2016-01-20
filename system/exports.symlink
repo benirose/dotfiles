@@ -25,8 +25,11 @@ export NODE_ENV="development"
 #macports
 export PATH=/opt/local/bin:/opt/local/sbin:/opt/local/apache2/bin:/opt/local/lib/php/pear/bin:/usr/local/bin:$PATH
 
-PREFIX=~/local
-export PREFIX
+#PREFIX=~/local
+#export PREFIX
 
 N_PREFIX=~/local
 export N_PREFIX
+
+export NVM_DIR=~/.nvm
+. $(brew --prefix nvm)/nvm.sh
