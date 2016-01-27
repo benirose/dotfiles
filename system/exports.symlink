@@ -32,4 +32,4 @@ N_PREFIX=~/local
 export N_PREFIX
 
 export NVM_DIR=~/.nvm
-. $(brew --prefix nvm)/nvm.sh
+#. $(brew --prefix nvm)/nvm.sh
