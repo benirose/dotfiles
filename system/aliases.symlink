@@ -4,29 +4,27 @@ alias ...="cd ../.."
 alias ~="cd ~" # `cd` is probably faster to type though
 alias -- -="cd -"
 
-# Shortcuts
-alias d="cd ~/Dropbox"
+# More navigation
 alias w="cd ~/www"
-alias g="git"
-alias v="vim"
-alias m="mate ."
-alias s="subl ."
-alias o="open"
-alias oo="open ."
 
 # List all files colorized in long format
 alias l="ls -Gl"
 
-alias cplite="rsync -av --exclude='.*' $1 $2"
-#alias versions="cd ~/www/waytohealth/versions/$1"
-function versions() { cd ~/www/waytohealth/versions/$1; }
-
 # List all files colorized in long format, including dot files
-alias la="ls -Gla"
 alias ll="ls -Gla"
 
 # List only directories
 alias lsd='ls -l | grep "^d"'
+
+# Shortcuts
+alias g="git"
+alias v="vim"
+alias s="subl ."
+alias o="open"
+alias oo="open ."
+
+# copy all files except dot files
+alias cplite="rsync -av --exclude='.*' $1 $2"
 
 # Always use color output for `ls`
 if [[ "$OSTYPE" =~ ^darwin ]]; then
@@ -39,26 +37,14 @@ fi
 # Enable aliases to be sudo’ed
 alias sudo='sudo '
 
-# Get OS X Software Updates, update Homebrew itself, and upgrade installed Homebrew packages
-alias update='sudo softwareupdate -i -a; brew update; brew upgrade; npm update -g'
+# shortcut to notify when a task is done
+alias d='terminal-notifier -message "Done"'
 
 # IP addresses
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
-alias localip="ipconfig getifaddr en1"
-alias ips="ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'"
-
-# Enhanced WHOIS lookups
-alias whois="whois -h whois-servers.net"
 
 # Flush Directory Service cache
 alias flush="dscacheutil -flushcache"
-
-# View HTTP traffic
-alias sniff="sudo ngrep -d 'en1' -t '^(GET|POST) ' 'tcp and port 80'"
-alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
-
-# Canonical hex dump; some systems have this symlinked
-type -t hd > /dev/null || alias hd="hexdump -C"
 
 # OS X has no `md5sum`, so use `md5` as a fallback
 type -t md5sum > /dev/null || alias md5sum="md5"
@@ -87,27 +73,16 @@ alias hide="defaults write com.apple.Finder AppleShowAllFiles -bool false && kil
 alias hidedesktop="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"
 alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
 
-# URL-encode strings
-alias urlencode='python -c "import sys, urllib as ul; print ul.quote_plus(sys.argv[1]);"'
-
 # Disable Spotlight
 alias spotoff="sudo mdutil -a -i off"
 # Enable Spotlight
 alias spoton="sudo mdutil -a -i on"
 
+# URL-encode strings
+alias urlencode='python -c "import sys, urllib as ul; print ul.quote_plus(sys.argv[1]);"'
+
 # PlistBuddy alias, because sometimes `defaults` just doesn’t cut it
 alias plistbuddy="/usr/libexec/PlistBuddy"
-
-# One of @janmoesen’s ProTip™s
-for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
-	alias "$method"="lwp-request -m '$method'"
-done
-
-# Stuff I never really use but cannot delete either because of http://xkcd.com/530/
-alias stfu="osascript -e 'set volume output muted true'"
-alias pumpitup="osascript -e 'set volume 10'"
-alias hax="growlnotify -a 'Activity Monitor' 'System error' -m 'WTF R U DOIN'"
-
 
 #alias pear="php /usr/lib/php/pear/pearcmd.php" 
 #alias pecl="php /usr/lib/php/pear/peclcmd.php"
@@ -116,19 +91,41 @@ alias mysqlstart='sudo /opt/local/bin/mysqld_safe5 &'
 alias mysqlstop='/opt/local/bin/mysqladmin5 -u root -proot shutdown'
 
 # SVN
+alias up='svn up && d'
+alias svnup='svn up'
 alias svnupi='svn up --ignore-externals'
 alias svnupp='svn up --ignore-externals; svn up plugins/wayToHealthPlugin'
 alias svnadd="svn stat | grep ? | awk '{ print \$2 }' | xargs svn add"
 alias svndelete-untracked="svn stat | grep ? | awk '{ print \$2 }' | xargs rm -fR"
+alias svnst="svn st | grep -vE '(^X|^Performing|^$)'"
 alias svnsti='svn st --ignore-externals | grep -v ^X'
 alias svnstp='svn st --ignore-externals | grep -v ^X; svn st plugins/wayToHealthPlugin'
-alias svnee='svn pe svn:externals .'
-#function svndiff() { svn diff "$1" | emacs; }
+alias svnpe='svn pe svn:externals .'
+alias svnpg='svn pg svn:externals .'
+function st { 
+    svn st "$*" |grep -vE 'Performing status on external item|^X.*|^$'; 
+}
+# opens a copy of repository version of file
+function repo {
+  st | grep $* | awk '{system("svn info "$2)}' | grep ^URL | awk '{system("svn cat " $2)}' | subl
+} 
+# prints diff for file without needing full path
+function dif {
+  st | grep $* | awk '{system("svn diff "$2)}'
+}
+# adds file without needing full path
+function add {
+  st | grep $* | awk '{system("svn add "$2)}'
+}
+
 
 #symfony
 alias sfsynccontent='./symfony project:sync-content frontend dev from staging@staging'
 alias sfdgmd='./symfony doctrine:generate-migrations-diff'
-alias sfdbac='./symfony doctrine:build --all-classes'
+
+alias build="./syfmony doctrine:build --all && d"
+alias build-classes='./symfony doctrine:build --all-classes && d'
+alias build-test="./symfony doctrine:build --all --env=test && d"
 
 # NPM
 alias npmpatch='npm version patch && git push && npm publish'
@@ -158,5 +155,21 @@ alias grv='gr -v'
 alias grr='git remote rm'
 alias gcl='git clone'
 
+alias chrome="open -a 'Google Chrome'"
 
 alias datafart='curl --data-binary @- datafart.com'
+
+alias grepe='grep --exclude-dir=.svn --exclude-dir=log --exclude-dir=cache --exclude-dir=node_modules'
+
+# WTH Dev specific
+
+#sync prod
+alias syncprod="./symfony w2h:sync-prod && d"
+
+# get study url name
+function name() { ll ~/www/waytohealth/web | grep $1; }
+
+# open study for current folder
+function dev() {
+  name ${PWD##*/} | awk '{ system("open http://waytohealth/"$9) }'
+}
