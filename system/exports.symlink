@@ -12,18 +12,16 @@ export HISTSIZE=32768
 export HISTFILESIZE=$HISTSIZE
 export HISTCONTROL=ignoredups
 # Make some commands not show up in history
-export HISTIGNORE="ls:ls *:cd:cd -:pwd;exit:date:* --help:[ \t]*"
+export HISTIGNORE="cd:cd -:pwd;exit:date:[ \t]*"
 
 
-# Node Config
-PATH=~/local/bin:$PATH
+PATH=/usr/local/bin:~/local/bin:$PATH
 PATH=$PATH:~/.dotfiles/bin
+# PHP 7.1 for CLI
+PATH=/usr/local/opt/php@7.1/bin:/usr/local/opt/php@7.1/sbin:$PATH
 export PATH
 
 export NODE_ENV="development"
-
-#macports
-export PATH=/opt/local/bin:/opt/local/sbin:/opt/local/apache2/bin:/opt/local/lib/php/pear/bin:/usr/local/bin:$PATH
 
 #PREFIX=~/local
 #export PREFIX
@@ -31,5 +29,8 @@ export PATH=/opt/local/bin:/opt/local/sbin:/opt/local/apache2/bin:/opt/local/lib
 N_PREFIX=~/local
 export N_PREFIX
 
-export NVM_DIR=~/.nvm
-. $(brew --prefix nvm)/nvm.sh
+#Node
+# export PATH=~/.nvm/versions/node/default/bin:$PATH
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

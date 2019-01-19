@@ -102,22 +102,41 @@ alias svnsti='svn st --ignore-externals | grep -v ^X'
 alias svnstp='svn st --ignore-externals | grep -v ^X; svn st plugins/wayToHealthPlugin'
 alias svnpe='svn pe svn:externals .'
 alias svnpg='svn pg svn:externals .'
-function st { 
-    svn st "$*" |grep -vE 'Performing status on external item|^X.*|^$'; 
-}
+# function st { 
+#     svn st "$*" |grep -vE 'Performing status on external item|^X.*|^$'; 
+# }
 # opens a copy of repository version of file
-function repo {
-  st | grep $* | awk '{system("svn info "$2)}' | grep ^URL | awk '{system("svn cat " $2)}' | subl
-} 
-# prints diff for file without needing full path
-function dif {
-  st | grep $* | awk '{system("svn diff "$2)}'
-}
-# adds file without needing full path
-function add {
-  st | grep $* | awk '{system("svn add "$2)}'
-}
+# function repo {
+#   st | grep $* | awk '{system("svn info "$2)}' | grep ^URL | awk '{system("svn cat " $2)}' | subl
+# } 
+# # prints diff for file without needing full path
+# function dif {
+#   st | grep $* | awk '{system("svn diff "$2)}'
+# }
+# # adds file without needing full path
+# function add {
+#   st | grep $* | awk '{system("svn add "$2)}'
+# }
+# # switches to a different branch without needing full path
+# function switch {
+#   svn info | grep ^URL | awk '{split($2,p,"branches"); system("svn switch "p[1]"branches/"branch)}' branch="$1"
+# }
+# # creates a new branch without needing full path
+# function branch {
+#   svn info | grep ^URL | awk '{split($2,p,"branches"); system("svn copy "$2" "p[1]"branches/"branch" -m \"Creating branch "branch"\"")}' branch="$1" 
+# }
+# # lists branches 
+# function branches {
+#   svn info | grep ^URL | awk {'split($2,p,"branches"); print p[1] "branches"'} | xargs svn ls
+# }
 
+# function mfm {
+#   svn info | grep ^URL: | sed 's/URL: //' | sed 's/dev/master/' | awk '{system("svn merge "$0" .")}'
+# }
+
+# function mfd {
+#   svn info | grep ^URL: | sed 's/URL: //' | sed 's/master/dev/' | awk '{system("svn merge "$0" .")}'
+# }
 
 #symfony
 alias sfsynccontent='./symfony project:sync-content frontend dev from staging@staging'
@@ -131,6 +150,14 @@ alias build-test="./symfony doctrine:build --all --env=test && d"
 alias npmpatch='npm version patch && git push && npm publish'
 
 # GIT
+alias st='git status -s;for plugin in plugins/*/; do (cd $plugin; if [[ `git status -s .` ]]; then echo;echo $plugin; git status -s .;fi ;) done'
+ 
+alias stree='open -a SourceTree ./'
+
+alias git-sync-tags='git tag -l | xargs git tag -d && git fetch --tags'
+alias git-trash='git reset --hard @{u}'
+alias git-gone-prune="git fetch --prune | git branch -vv | grep ': gone]' | awk '{print \$1}' | xargs git branch -d"
+alias git-gone="git fetch --prune | git branch -vv | grep ': gone]' | awk '{print \$1}'"
 alias g='git'
 alias ga='git add'
 alias gp='git push'
@@ -154,6 +181,7 @@ alias grv='gr -v'
 #alias gra='git remote add'
 alias grr='git remote rm'
 alias gcl='git clone'
+alias modulestatus="find . -maxdepth 1 -mindepth 1 -type d -exec sh -c '(echo {} && cd {} && git status -s && echo)' \;"
 
 alias chrome="open -a 'Google Chrome'"
 
@@ -162,6 +190,8 @@ alias datafart='curl --data-binary @- datafart.com'
 alias grepe='grep --exclude-dir=.svn --exclude-dir=log --exclude-dir=cache --exclude-dir=node_modules'
 
 # WTH Dev specific
+
+alias plugin='cd plugins/wayToHealthPlugin'
 
 #sync prod
 alias syncprod="./symfony w2h:sync-prod && d"
@@ -172,4 +202,15 @@ function name() { ll ~/www/waytohealth/web | grep $1; }
 # open study for current folder
 function dev() {
   name ${PWD##*/} | awk '{ system("open http://waytohealth/"$9) }'
+}
+
+# cat ummon log
+alias ulog='ssh prod-tasks cat log/ummon/server.log'
+# log an ummon run
+function ulogrun() {
+  ssh prod-tasks grep "$0" log/ummon/server.log | bunyan -L -c 'this.runid == "$0"'
+}
+# tail ummon log
+function utail() {
+  ssh prod-tasks tail -f log/ummon/server.log | gstdbuf -o0 bunyan -L -c 'this.taskid == "$1"'
 }

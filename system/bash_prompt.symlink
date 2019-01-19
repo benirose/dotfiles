@@ -68,6 +68,14 @@ export WHITE
 export BOLD
 export RESET
 
+function parse_svn_project_branch() {
+	[ -d .svn ] && svn info 2> /dev/null | grep ^URL | grep -oE '(tags|branches)/([^/]+)|trunk' | sed 's:branches/::g'
+}
+
+function parse_svn_plugin_branch() {
+	svn info 2> /dev/null | grep ^Working\ Copy | grep -oE '(/.*)/versions/[^/]*' | awk '{print $1"/plugins/wayToHealthPlugin"}' | xargs svn info | grep ^URL | grep -oE '(tags|branches)/([^/]+)|trunk' | sed 's:branches/::g'
+}
+
 function parse_git_dirty() {
 	[[ $(git status 2> /dev/null | tail -n1) != "nothing to commit, working directory clean" ]] && echo "$RED\±"
 }
@@ -76,4 +84,4 @@ function parse_git_branch() {
 	git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(parse_git_dirty)/"
 }
 
-PS1="\n\[${BLUE}\]\u\[$WHITE\] @ \[$ORANGE\]\h\[$WHITE\] : \[$CYAN\]\w\[$WHITE\]\$([[ -n \$(git branch 2> /dev/null) ]] && echo \" on \")\[$GREEN\]\$(parse_git_branch)\[$WHITE\]\n\$ \[$RESET\]"
+PS1="\n\[${BLUE}\]\u\[$WHITE\] @ \[$ORANGE\]\h\[$WHITE\] : \[$CYAN\]\w\[$WHITE\]\$([[ -n \$(git branch 2> /dev/null) ]] && echo \" on \")\[$GREEN\]\$(parse_git_branch)\[$WHITE\]\$([ -d .svn ] && echo \" on \")\[$GREEN\]\$(parse_svn_project_branch)\n\$ \[$RESET\]"

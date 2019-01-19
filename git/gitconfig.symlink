@@ -30,7 +30,7 @@
 
 [core]
 	# Use custom `.gitignore` and `.gitattributes`
-	excludesfile = /opt/boxen/config/git/gitignore
+	excludesfile = /Users/benrose/.gitignore_global
 	attributesfile = ~/.gitattributes
 	# Treat spaces before tabs, lines that are indented with 8 or more spaces, and all kinds of trailing whitespace as an error
 	whitespace = space-before-tab,indent-with-non-tab,trailing-space
@@ -79,7 +79,7 @@
 	email = ben@benrosenbach.com
 	
 [push]
-	default = matching
+	default = simple
 
 [hub]
 protocol = https
@@ -88,3 +88,11 @@ protocol = https
 # helper = /opt/boxen/bin/boxen-git-credential
 [credential]
 	helper = osxkeychain
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[commit]
+	template = /Users/benrose/.stCommitMsg
