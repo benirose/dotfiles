@@ -1,0 +1,10 @@
+#!/bin/bash
+
+PHPMods="/usr/local/etc/php/7.1/conf.d"
+Mod="$1.ini"
+
+if [ -e "${PHPMods}/${Mod}" ]; then
+   mv "${PHPMods}/${Mod}" "${PHPMods}/${Mod}.disabled";
+   brew services restart httpd
+fi
+php -v
