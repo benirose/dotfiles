@@ -17,7 +17,7 @@ sudo -v
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 # Restart automatically if the computer freezes
-systemsetup -setrestartfreeze on
+#systemsetup -setrestartfreeze on
 
 # Enable full keyboard access for all controls (e.g. enable Tab in modal dialogs)
 defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
@@ -120,11 +120,6 @@ defaults write com.apple.finder ShowStatusBar -bool true
 # Allow text selection in Quick Look
 defaults write com.apple.finder QLEnableTextSelection -bool true
 
-# Disable disk image verification
-defaults write com.apple.frameworks.diskimages skip-verify -bool true
-defaults write com.apple.frameworks.diskimages skip-verify-locked -bool true
-defaults write com.apple.frameworks.diskimages skip-verify-remote -bool true
-
 # Automatically open a new Finder window when a volume is mounted
 defaults write com.apple.frameworks.diskimages auto-open-ro-root -bool true
 defaults write com.apple.frameworks.diskimages auto-open-rw-root -bool true
@@ -150,8 +145,8 @@ defaults write com.apple.dock expose-animation-duration -float 0
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 # Allow installing user scripts via GitHub or Userscripts.org
-defaults write com.google.Chrome ExtensionInstallSources -array "https://*.github.com/*" "http://userscripts.org/*"
-defaults write com.google.Chrome.canary ExtensionInstallSources -array "https://*.github.com/*" "http://userscripts.org/*"
+#defaults write com.google.Chrome ExtensionInstallSources -array "https://*.github.com/*" "http://userscripts.org/*"
+#defaults write com.google.Chrome.canary ExtensionInstallSources -array "https://*.github.com/*" "http://userscripts.org/*"
 
 #							Misc apps
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -233,9 +228,6 @@ defaults write com.apple.dock mouse-over-hilte-stack -bool true
 # Enable spring loading for all Dock items
 defaults write com.apple.dock enable-spring-load-actions-on-all-items -bool true
 
-# Show indicator lights for open applications in the Dock
-defaults write com.apple.dock show-process-indicators -bool true
-
 # Don’t animate opening applications from the Dock
 #defaults write com.apple.dock launchanim -bool false
 
@@ -243,9 +235,6 @@ defaults write com.apple.dock show-process-indicators -bool true
 defaults write com.apple.Dock autohide-delay -float 0
 # Remove the animation when hiding/showing the Dock
 defaults write com.apple.dock autohide-time-modifier -float 0
-
-# Enable the 2D Dock
-defaults write com.apple.dock no-glass -bool true
 
 # Automatically hide and show the Dock
 defaults write com.apple.dock autohide -bool false
@@ -278,11 +267,6 @@ defaults write com.apple.terminal StringEncodings -array 4
 #defaults write com.apple.terminal FocusFollowsMouse -bool true
 #defaults write org.x.X11 wm_ffm -bool true
 
-# Disable the Ping sidebar in iTunes
-defaults write com.apple.iTunes disablePingSidebar -bool true
-
-# Disable all the other Ping stuff in iTunes
-defaults write com.apple.iTunes disablePing -bool true
 
 # Make ⌘ + F focus the search input in iTunes
 defaults write com.apple.iTunes NSUserKeyEquivalents -dict-add "Target Search Field" "@F"
